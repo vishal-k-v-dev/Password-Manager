@@ -14,7 +14,8 @@ class HomePage extends StatelessWidget {
         .doc(user.uid)
         .collection('passwords');
 
-    final passwordQuery = passwordsCollection.orderBy('createdAt', descending: true);
+    final passwordQuery =
+        passwordsCollection.orderBy('createdAt', descending: true);
 
     return Scaffold(
       body: StreamBuilder<QuerySnapshot>(
@@ -72,18 +73,16 @@ class HomePage extends StatelessWidget {
                           color: Colors.white),
                       const SizedBox(height: 10),
 
-                      // Username row
+                      // Username row with icon snugged
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Expanded(
-                            child: Text(
-                              "User Name",
-                              style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                              ),
+                          const Text(
+                            "Username",
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
                             ),
                           ),
                           GestureDetector(
@@ -98,9 +97,12 @@ class HomePage extends StatelessWidget {
                           ),
                         ],
                       ),
+
+                      // Username Container
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Container(
+                          width: double.infinity,
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.white),
@@ -110,18 +112,16 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
 
-                      // Password row
+                      // Password row with icon snugged
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Expanded(
-                            child: Text(
-                              "Password",
-                              style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                              ),
+                          const Text(
+                            "Password",
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
                             ),
                           ),
                           GestureDetector(
@@ -136,9 +136,12 @@ class HomePage extends StatelessWidget {
                           ),
                         ],
                       ),
+
+                      // Password Container
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Container(
+                          width: double.infinity,
                           padding: const EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.white),
@@ -232,7 +235,8 @@ class _AddPasswordDialogState extends State<AddPasswordDialog> {
             TextField(
               controller: usernameController,
               cursorColor: Colors.white,
-              decoration: const InputDecoration(labelText: 'Username or Email'),
+              decoration:
+                  const InputDecoration(labelText: 'Username or Email'),
             ),
             const SizedBox(height: 10),
             TextField(
