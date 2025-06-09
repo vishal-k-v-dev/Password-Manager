@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // For Clipboard
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
       body: StreamBuilder<QuerySnapshot>(
         stream: passwordQuery.snapshots(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting){
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -37,10 +37,10 @@ class HomePage extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(10),
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 40, 40, 40),
-                    borderRadius: BorderRadius.circular(10)
+                    color: const Color.fromARGB(255, 40, 40, 40),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
                     children: [
@@ -49,95 +49,112 @@ class HomePage extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              data['websiteName'][0].toUpperCase() + data['websiteName'].substring(1), 
-                              style: TextStyle(overflow: TextOverflow.ellipsis, fontWeight: FontWeight.w900, fontSize: 19)
+                              data['websiteName'][0].toUpperCase() +
+                                  data['websiteName'].substring(1),
+                              style: const TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 19,
+                              ),
                             ),
                           ),
                           GestureDetector(
-                            child: Icon(Icons.delete)
-                          )
+                            onTap: () =>
+                                passwordsCollection.doc(data.id).delete(),
+                            child: const Icon(Icons.delete, color: Colors.red),
+                          ),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Container(
-                        height: .7, width: double.infinity,
-                        color: Colors.white,
-                      ),
-                      SizedBox(height: 10),
+                          height: 0.7,
+                          width: double.infinity,
+                          color: Colors.white),
+                      const SizedBox(height: 10),
+
+                      // Username row
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(
+                          const Expanded(
                             child: Text(
-                              "User Name", 
-                              style: TextStyle(overflow: TextOverflow.ellipsis, fontWeight: FontWeight.bold, fontSize: 17)
+                              "User Name",
+                              style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
                             ),
                           ),
                           GestureDetector(
-                            child: Icon(Icons.copy)
-                          )
+                            onTap: () {
+                              final text = data['usernameOrEmail'];
+                              Clipboard.setData(ClipboardData(text: text));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Username copied!')),
+                              );
+                            },
+                            child: const Icon(Icons.copy, color: Colors.white),
+                          ),
                         ],
                       ),
-Padding(
-  padding: const EdgeInsets.all(10.0),
-  child: Container(
-    padding: const EdgeInsets.all(10.0),
-    decoration: BoxDecoration(
-      border: Border.all(color: Colors.white),
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    child: Text('${data['usernameOrEmail']}'),
-  ),
-)
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Text('${data['usernameOrEmail']}'),
+                        ),
+                      ),
 
-
-
-
-Row(
+                      // Password row
+                      Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Expanded(
+                          const Expanded(
                             child: Text(
-                              "Password", 
-                              style: TextStyle(overflow: TextOverflow.ellipsis, fontWeight: FontWeight.bold, fontSize: 17)
+                              "Password",
+                              style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
                             ),
                           ),
                           GestureDetector(
-                            child: Icon(Icons.copy)
-                          )
+                            onTap: () {
+                              final text = data['password'];
+                              Clipboard.setData(ClipboardData(text: text));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Password copied!')),
+                              );
+                            },
+                            child: const Icon(Icons.copy, color: Colors.white),
+                          ),
                         ],
                       ),
-
-
-
-
-Padding(
-  padding: const EdgeInsets.all(10.0),
-  child: Container(
-    padding: const EdgeInsets.all(10.0),
-    decoration: BoxDecoration(
-      border: Border.all(color: Colors.white),
-      borderRadius: BorderRadius.circular(10.0),
-    ),
-    child: Text('${data['password']}'),
-  ),
-)
-
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Text('${data['password']}'),
+                        ),
+                      ),
                     ],
                   ),
-                  // title: Text(data['websiteName'] ?? ''),
-                  // subtitle: Text('${data['usernameOrEmail']}'),
-                  // trailing: IconButton(
-                  //   icon: const Icon(Icons.delete),
-                  //   onPressed: () => passwordsCollection.doc(data.id).delete(),
-                  // ),
                 ),
               );
             },
           );
         },
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
@@ -165,16 +182,13 @@ class _AddPasswordDialogState extends State<AddPasswordDialog> {
   final passwordController = TextEditingController();
 
   Future<void> savePassword() async {
-    if(websiteNameController.text.trim().isEmpty){
+    if (websiteNameController.text.trim().isEmpty) {
       showSnackBar("Website name can't be empty");
-    }
-    else if(usernameController.text.trim().isEmpty){
+    } else if (usernameController.text.trim().isEmpty) {
       showSnackBar("User ID can't be empty");
-    }
-    else if(passwordController.text.trim().isEmpty){
-      showSnackBar("Passsword can't be empty");
-    }
-    else{
+    } else if (passwordController.text.trim().isEmpty) {
+      showSnackBar("Password can't be empty");
+    } else {
       final user = FirebaseAuth.instance.currentUser!;
       final ref = FirebaseFirestore.instance
           .collection('users')
@@ -194,36 +208,65 @@ class _AddPasswordDialogState extends State<AddPasswordDialog> {
 
   void showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
+      SnackBar(content: Text(message)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Add Password", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21)),
-      backgroundColor: Color.fromARGB(255, 40, 40, 40),
+      title: const Text(
+        "Add Password",
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
+      ),
+      backgroundColor: const Color.fromARGB(255, 40, 40, 40),
       content: SingleChildScrollView(
         child: Column(
           children: [
-            TextField(controller: websiteNameController, cursorColor: Colors.white, decoration: InputDecoration(labelText: 'Website Name')),
-            SizedBox(height: 10),
-            TextField(controller: usernameController, cursorColor: Colors.white, decoration: InputDecoration(labelText: 'Username or Email')),
-            SizedBox(height: 10),
-            TextField(controller: passwordController, cursorColor: Colors.white, decoration: InputDecoration(labelText: 'Password')),
+            TextField(
+              controller: websiteNameController,
+              cursorColor: Colors.white,
+              decoration: const InputDecoration(labelText: 'Website Name'),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: usernameController,
+              cursorColor: Colors.white,
+              decoration: const InputDecoration(labelText: 'Username or Email'),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: passwordController,
+              cursorColor: Colors.white,
+              decoration: const InputDecoration(labelText: 'Password'),
+            ),
           ],
         ),
       ),
       actionsAlignment: MainAxisAlignment.spaceBetween,
       actions: [
-        SizedBox(
-          child: ElevatedButton(onPressed: () => Navigator.pop(context), style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 40, 40, 40), foregroundColor: Colors.white, shape: RoundedRectangleBorder(side: BorderSide(color: Colors.white, width: 1), borderRadius: BorderRadius.circular(10))), child: const Text("Cancel"))
+        ElevatedButton(
+          onPressed: () => Navigator.pop(context),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 40, 40, 40),
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(color: Colors.white, width: 1),
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: const Text("Cancel"),
         ),
-        SizedBox(
-
-          child: ElevatedButton(onPressed: savePassword, style: ElevatedButton.styleFrom(backgroundColor: Colors.teal, foregroundColor: Colors.white, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))), child: const Text("Save"))
+        ElevatedButton(
+          onPressed: savePassword,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.teal,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          child: const Text("Save"),
         ),
       ],
     );
