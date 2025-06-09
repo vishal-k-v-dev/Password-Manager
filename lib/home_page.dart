@@ -70,7 +70,7 @@ class HomePage extends StatelessWidget {
                           Expanded(
                             child: Text(
                               "User Name", 
-                              style: TextStyle(overflow: TextOverflow.ellipsis, fontWeight: FontWeight.w900, fontSize: 19)
+                              style: TextStyle(overflow: TextOverflow.ellipsis, fontWeight: FontWeight.bold, fontSize: 17)
                             ),
                           ),
                           GestureDetector(
@@ -78,6 +78,51 @@ class HomePage extends StatelessWidget {
                           )
                         ],
                       ),
+Padding(
+  padding: const EdgeInsets.all(10.0),
+  child: Container(
+    padding: const EdgeInsets.all(10.0),
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.white),
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    child: Text('${data['usernameOrEmail']}'),
+  ),
+)
+
+
+
+
+Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Password", 
+                              style: TextStyle(overflow: TextOverflow.ellipsis, fontWeight: FontWeight.bold, fontSize: 17)
+                            ),
+                          ),
+                          GestureDetector(
+                            child: Icon(Icons.copy)
+                          )
+                        ],
+                      ),
+
+
+
+
+Padding(
+  padding: const EdgeInsets.all(10.0),
+  child: Container(
+    padding: const EdgeInsets.all(10.0),
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.white),
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    child: Text('${data['password']}'),
+  ),
+)
+
                     ],
                   ),
                   // title: Text(data['websiteName'] ?? ''),
