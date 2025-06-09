@@ -139,7 +139,7 @@ class HomePage extends StatelessWidget {
 
                       // Password Container
                       Padding(
-                        padding: const EdgeInsets.all(top: 10, bottom: 10),
+                        padding: const EdgeInsets.only(top: 10, bottom: 10),
                         child: Container(
                           width: double.infinity,
                           padding: const EdgeInsets.all(10.0),
